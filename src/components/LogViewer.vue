@@ -6,23 +6,7 @@
     <div id="logarea">
       <ul>
         <li v-for="item in logFiles">
-          {{item.name}}
-          <table class="logtable">
-            <tbody>
-              <tr v-for="log in item.logs" :key="log.index">
-                <td v-for="column in log.key">
-                  {{column}}
-                </td>
-                <td>
-                  <ul>
-                    <li v-for="d in log.detail">
-                      {{d}}
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <logtable v-bind:item="item"></logtable>
         </li>
       </ul>
     </div>
@@ -31,6 +15,9 @@
 
 <script>
 import LogFile from '../models/logfile'
+import LogTable from '@/components/LogTable'
+import Vue from 'vue'
+Vue.component('logtable', LogTable)
 
 export default {
   name: 'LogViewer',
@@ -59,15 +46,5 @@ export default {
 #logarea {
   text-align: left;
   color: black;
-}
-
-
-table {
-  border-collapse: collapse;
-}
-
-table tr td {
-    border: 1px black solid;
-    padding: 3px
 }
 </style>
