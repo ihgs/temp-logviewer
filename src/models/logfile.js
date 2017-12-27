@@ -13,6 +13,20 @@ class LogItem {
 
 class LogFile {
   constructor (file, logformat) {
+    const countGroup = (str) => {
+      const start = str.match(/\(/g)
+      if (start) {
+        const escaped = str.match(/\\\(/g)
+        if (escaped) {
+          return start.length - escaped.length + 1
+        } else {
+          return start.length + 1
+        }
+      } else {
+        return 1
+      }
+    }
+    this.size = countGroup(logformat.toString())
     this.name = file.name
     const reader = new FileReader()
     this.logs = []
