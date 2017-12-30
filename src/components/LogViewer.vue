@@ -1,9 +1,9 @@
 <template>
 <div id="upload_section">
-    <div id="drop" draggable=true style="height:50px; padding:10px; border:3px solid" v-on:dragover="onDragOver" v-on:drop="onDrop">
+    <div id="drop" draggable=true v-on:dragover="onDragOver" v-on:drop="onDrop">
         ファイルをドラッグアンドドロップしてください。複数ファイル同時も対応しています。
     </div>
-    <div id="logarea">
+    <div class="logarea">
       <ul>
         <li v-for="item in logFiles">
           <logtable v-bind:item="item"></logtable>
@@ -43,7 +43,13 @@ export default {
 </script>
 
 <style>
-#logarea {
+#drop {
+  height:50px;
+  padding:10px; 
+  border:3px solid
+}
+
+.logarea {
   text-align: left;
   color: black;
 }
