@@ -12,30 +12,50 @@ class LogItem {
 }
 
 class LogFile {
-  constructor (file, logformat) {
-    const countGroup = (str) => {
-      const start = str.match(/\(/g)
-      if (start) {
-        const escaped = str.match(/\\\(/g)
-        if (escaped) {
-          return start.length - escaped.length + 1
-        } else {
-          return start.length + 1
-        }
+  countGroup (str) {
+    const start = str.match(/\(/g)
+    if (start) {
+      const escaped = str.match(/\\\(/g)
+      if (escaped) {
+        return start.length - escaped.length + 1
       } else {
-        return 1
+        return start.length + 1
       }
+    } else {
+      return 1
     }
-    this.size = countGroup(logformat.toString())
-    this.name = file.name
-    const reader = new FileReader()
+  }
+  setLogformat (logformat) {
+    ''.match(logformat)
+    this.logformat = logformat
+    this.size = this.countGroup(logformat.toString())
+  }
+  initByString (logstr) {
+    this.name = 'Check'
     this.logs = []
+
+    let logItem
+    let index = 0
+    logstr.split('\n').forEach(element => {
+      const matchItem = element.match(this.logformat)
+      if (matchItem) {
+        logItem = new LogItem(matchItem, ++index)
+        this.logs.push(logItem)
+      } else if (logItem) {
+        logItem.add(element)
+      }
+    })
+  }
+  initByFile (file) {
+    this.name = file.name
+    this.logs = []
+    const reader = new FileReader()
     reader.onload = (e) => {
       const res = e.target.result
       let logItem
       let index = 0
       res.split('\n').forEach(element => {
-        const matchItem = element.match(logformat)
+        const matchItem = element.match(this.logformat)
         if (matchItem) {
           logItem = new LogItem(matchItem, ++index)
           this.logs.push(logItem)

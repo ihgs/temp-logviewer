@@ -1,5 +1,8 @@
 <template>
 <div id="upload_section">
+    <div class="title">
+      ログ解析
+    </div>
     <div id="drop" draggable=true v-on:dragover="onDragOver" v-on:drop="onDrop">
         ファイルをドラッグアンドドロップしてください。複数ファイル同時も対応しています。
     </div>
@@ -34,7 +37,9 @@ export default {
       event.preventDefault()
       const files = event.dataTransfer.files
       for (let i = 0; i < files.length; i++) {
-        const logfile = new LogFile(files[i], /^(\d+:\d+:\d+\.\d+)\s+\[([\w\d-]+)\]\s+(\w+)\s+(.*)$/)
+        const logfile = new LogFile()
+        logfile.setLogformat('^(\\d+:\\d+:\\d+\\.\\d+)\\s+\\[([\\w\\d-]+)\\]\\s+(\\w+)\\s+(.*)$')
+        logfile.initByFile(files[i])
         this.logFiles.push(logfile)
       }
     }
