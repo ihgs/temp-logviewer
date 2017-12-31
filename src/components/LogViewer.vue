@@ -6,7 +6,7 @@
     <div class="input">
       <b-form>
         <b-form-group label="Log Format">
-          <b-form-select v-model="selected">
+          <b-form-select v-model="selected" :state="select_valid">
             <option :value="null">Please select an option</option>
             <option v-for="option in options.logFormats" v-bind:key="option.id" v-bind:value="option.id">{{option.id}} : {{option.format}}a</option>
           </b-form-select>
@@ -40,7 +40,8 @@ export default {
     return {
       logFiles: [],
       selected: null,
-      options: new LogFormatList()
+      options: new LogFormatList(),
+      select_valid: 'null'
     }
   },
   methods: {
@@ -51,12 +52,18 @@ export default {
       this.logFiles = []
       event.preventDefault()
       const files = event.dataTransfer.files
+      const logFormat = this.options.get(this.selected)
+      if (logFormat === undefined) {
+        this.select_valid = 'invalid'
+        return
+      }
       for (let i = 0; i < files.length; i++) {
         const logfile = new LogFile()
-        logfile.setLogformat(this.options.get(this.selected).format)
+        logfile.setLogformat(logFormat.format)
         logfile.initByFile(files[i])
         this.logFiles.push(logfile)
       }
+      this.select_valid = 'null'
     }
   }
 }

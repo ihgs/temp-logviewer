@@ -13,6 +13,9 @@ class LogFormatList {
     }
   }
   add (id, format) {
+    if (this.get(id)) {
+      throw Error('Already exists. ' + id)
+    }
     const logformat = new LogFormat({id: id, format: format})
     this.logFormats.push(logformat)
   }
@@ -25,11 +28,9 @@ class LogFormatList {
     })
   }
   get (id) {
-    const a = _.find(this.logFormats, function (e) {
+    return _.find(this.logFormats, function (e) {
       return id === e.id
     })
-    console.log(a)
-    return a
   }
   static storageKey () {
     return 'logviewer'

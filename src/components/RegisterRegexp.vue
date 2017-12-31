@@ -25,21 +25,25 @@
       <b-form-group label="Log Format">
         <b-form-input type="text" class="logformat" v-model="logformat">
         </b-form-input>
+        <div class="error">
+          {{errorMsg}}
+        </div>
       </b-form-group>
       <b-button type="submit" v-on:click="load()">Check</b-button>
       <b-button type="reset" v-on:click="clear()">Clear</b-button>
-      <div class="error">
-        {{errorMsg}}
+
+      <div class="logarea" v-if="this.logFile">
+        <logtable v-bind:item="logFile"></logtable>
       </div>
       <b-form-group label="Log Format Id">
         <b-form-input type="text" v-model="logformat_id">
         </b-form-input>
+        <div class="error">
+          {{errorMsgLogFormatId}}
+        </div>
       </b-form-group>
       <b-button type="submit" v-on:click="register()">Register</b-button>
     </b-form>
-  </div>
-  <div class="logarea" v-if="this.logFile">
-    <logtable v-bind:item="logFile"></logtable>
   </div>
 </div>
 </template>
@@ -57,6 +61,7 @@ export default {
       logFile: undefined,
       logformat_id: '',
       errorMsg: '',
+      errorMsgLogFormatId: '',
       registerd: new LogFormatList(),
       fields: [
         {key: 'id', label: 'Id'},
@@ -84,8 +89,19 @@ export default {
       this.logFile = undefined
     },
     register: function () {
-      this.registerd.add(this.logformat_id, this.logformat)
+      this.errorMsgLogFormatId = ''
+      if (this.logformat_id.trim().length === 0) {
+        this.errorMsgLogFormatId = 'Input Log format Id'
+        return
+      }
+      try {
+        this.registerd.add(this.logformat_id.trim(), this.logformat)
+      } catch (e) {
+        this.errorMsgLogFormatId = e.message
+        return
+      }
       this.registerd.save()
+      this.logformat_id = ''
     },
     remove: function (id) {
       this.registerd.remove(id)
