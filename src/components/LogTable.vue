@@ -1,6 +1,7 @@
 <template>
 <div>
   {{item.name}}
+  <div id="message">{{message}}</div>
   <table class="logtable" v-if="item">
     <thead>
       <tr>
@@ -40,33 +41,41 @@ export default {
   data () {
     return {
       filterlogs: this.item.logs,
-      filters: []
+      filters: [],
+      message: ''
     }
   },
   methods: {
-    update: function (n, value) {
+    update: _.debounce(function (n, value) {
+      this.message = 'Filtering....'
+      this.filterlogs = []
       this.filters[n - 1] = value
       const filters = this.filters
-      this.filterlogs = _.filter(this.item.logs, function (l) {
-        const columnSize = l.key.length
-        let hasInput = false
-        let match = false
-        for (let i = 0; i < columnSize; i++) {
-          if (filters[i] !== undefined && filters[i].length > 0) {
-            hasInput = true
-            if (l.key[i].includes(filters[i])) {
-              match = true
+      const _this = this
+      _.defer(function () {
+        _this.filterlogs = _.filter(_this.item.logs, function (l) {
+          const columnSize = l.key.length
+          let hasInput = false
+          let match = false
+          for (let i = 0; i < columnSize; i++) {
+            if (filters[i] !== undefined && filters[i].length > 0) {
+              hasInput = true
+              if (l.key[i].includes(filters[i])) {
+                match = true
+                break
+              }
             }
           }
-        }
-        return match || !hasInput
+          return match || !hasInput
+        })
+        _this.message = ''
       })
-    }
+    }, 1000)
   }
 }
 </script>
 
-<style>
+<style scoped>
 table {
   border-collapse: collapse;
 }

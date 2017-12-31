@@ -36,7 +36,7 @@ class LogFile {
 
     let logItem
     let index = 0
-    logstr.split('\n').forEach(element => {
+    logstr.split(/\r?\n/).forEach(element => {
       const matchItem = element.match(this.logformat)
       if (matchItem) {
         logItem = new LogItem(matchItem, ++index)
@@ -54,7 +54,7 @@ class LogFile {
       const res = e.target.result
       let logItem
       let index = 0
-      res.split('\n').forEach(element => {
+      res.split(/\r?\n/).forEach(element => {
         const matchItem = element.match(this.logformat)
         if (matchItem) {
           logItem = new LogItem(matchItem, ++index)

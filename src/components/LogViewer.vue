@@ -3,8 +3,18 @@
     <div class="title">
       ログ解析
     </div>
+    <div class="input">
+      <b-form>
+        <b-form-group label="Log Format">
+          <b-form-select v-model="selected">
+            <option :value="null">Please select an option</option>
+            <option v-for="option in options.logFormats" v-bind:key="option.id" v-bind:value="option.id">{{option.id}} : {{option.format}}a</option>
+          </b-form-select>
+        </b-form-group>
+      </b-form>
+    </div>
     <div id="drop" draggable=true v-on:dragover="onDragOver" v-on:drop="onDrop">
-        ファイルをドラッグアンドドロップしてください。複数ファイル同時も対応しています。
+        ファイルをドラッグアンドドロップしてください。
     </div>
     <div class="logarea">
       <ul>
@@ -18,6 +28,8 @@
 
 <script>
 import LogFile from '../models/logfile'
+import LogFormatList from '../models/logformat'
+
 import LogTable from '@/components/LogTable'
 import Vue from 'vue'
 Vue.component('logtable', LogTable)
@@ -26,7 +38,9 @@ export default {
   name: 'LogViewer',
   data () {
     return {
-      logFiles: []
+      logFiles: [],
+      selected: null,
+      options: new LogFormatList()
     }
   },
   methods: {
@@ -34,11 +48,12 @@ export default {
       event.preventDefault()
     },
     onDrop: function (event) {
+      this.logFiles = []
       event.preventDefault()
       const files = event.dataTransfer.files
       for (let i = 0; i < files.length; i++) {
         const logfile = new LogFile()
-        logfile.setLogformat('^(\\d+:\\d+:\\d+\\.\\d+)\\s+\\[([\\w\\d-]+)\\]\\s+(\\w+)\\s+(.*)$')
+        logfile.setLogformat(this.options.get(this.selected).format)
         logfile.initByFile(files[i])
         this.logFiles.push(logfile)
       }
