@@ -49,7 +49,6 @@ export default {
       event.preventDefault()
     },
     onDrop: function (event) {
-      this.logFiles = []
       event.preventDefault()
       const files = event.dataTransfer.files
       const logFormat = this.options.get(this.selected)
@@ -57,11 +56,15 @@ export default {
         this.select_valid = 'invalid'
         return
       }
+      if (this.logFiles.length > 0) {
+        this.logFiles.splice(0, 1)
+      }
       for (let i = 0; i < files.length; i++) {
         const logfile = new LogFile()
         logfile.setLogformat(logFormat.format)
         logfile.initByFile(files[i])
         this.logFiles.push(logfile)
+        break
       }
       this.select_valid = 'null'
     }

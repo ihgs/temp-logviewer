@@ -46,6 +46,11 @@ export default {
       message: ''
     }
   },
+  watch: {
+    item: function () {
+      this.update()
+    }
+  },
   methods: {
     update: _.debounce(function (n, value) {
       this.message = 'Filtering....'

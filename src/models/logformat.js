@@ -23,9 +23,12 @@ class LogFormatList {
     localStorage.setItem(LogFormatList.storageKey(), JSON.stringify(this))
   }
   remove (id) {
-    _.remove(this.logFormats, function (e) {
+    const index = this.logFormats.findIndex(function (e) {
       return id === e.id
     })
+    if (index !== -1) {
+      this.logFormats.splice(index, 1)
+    }
   }
   get (id) {
     return _.find(this.logFormats, function (e) {
