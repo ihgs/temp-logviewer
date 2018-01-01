@@ -5,24 +5,22 @@
   <table class="logtable" v-if="item">
     <thead>
       <tr>
-        <th v-for="n in this.item.size" :key="n">
+        <th>No.</th>
+        <th v-for="n in this.item.size-1" :key="n">
           <input type="text" v-on:input="update(n, $event.target.value)" >
         </th>
-        <td>
-        </td>
+        <th>
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="log in filterlogs" :key="log.index">
+        <td>{{log.index}}</td>
         <td v-for="column in log.key">
           {{column}}
         </td>
         <td>
-          <ol>
-            <li v-for="d in log.detail">
-              {{d}}
-            </li>
-          </ol>
+          <logtabledetail v-bind:detail="log.detail" v-bind:logindex="log.index"></logtabledetail>
         </td>
       </tr>
     </tbody>
@@ -32,6 +30,9 @@
 
 <script>
 import _ from 'lodash'
+import LogTableDetail from '@/components/LogTableDetail'
+import Vue from 'vue'
+Vue.component('logtabledetail', LogTableDetail)
 
 export default {
   name: 'LogTable',
