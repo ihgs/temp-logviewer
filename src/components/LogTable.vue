@@ -1,6 +1,9 @@
 <template>
 <div>
   {{item.name}}
+  <div align="right">
+    <b-button v-on:click="exportToCsv()" size="sm">Download CSV</b-button>
+  </div>
   <div id="message">{{message}}</div>
   <table class="logtable" v-if="item">
     <thead>
@@ -76,7 +79,45 @@ export default {
         })
         _this.message = ''
       })
-    }, 1000)
+    }, 1000),
+    exportToCsv: function () {
+      const csvRow = (logitem) => {
+        let finalVal = ''
+        _.each(logitem.key, function (c) {
+          const column = c === null ? '' : c.toString()
+          const result = column.replace(/"/g, '""')
+          finalVal += '"' + result + '",'
+        })
+        let detail = ''
+        _.each(logitem.detail, function (line) {
+          detail += line + '\n'
+        })
+        detail = detail.replace(/"/g, '""')
+        finalVal += '"' + detail + '"'
+        return finalVal + '\n'
+      }
+      let csvFile = ''
+      for (let i = 0; i < this.filterlogs.length; i++) {
+        csvFile += csvRow(this.filterlogs[i])
+      }
+
+      const filename = 'exportlog.csv'
+      const blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' })
+      if (navigator.msSaveBlob) {
+        navigator.msSaveBlob(blob, filename)
+      } else {
+        const link = document.createElement('a')
+        if (link.download !== undefined) {
+          var url = URL.createObjectURL(blob)
+          link.setAttribute('href', url)
+          link.setAttribute('download', filename)
+          link.style.visibility = 'hidden'
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+        }
+      }
+    }
   }
 }
 </script>
