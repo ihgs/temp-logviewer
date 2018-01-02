@@ -81,7 +81,7 @@ export default {
         this.errorMsg = e.message
         return
       }
-      logFile.initByString(this.sample)
+      logFile.initByString('Check result', this.sample)
       this.logFile = logFile
     },
     clear: function () {

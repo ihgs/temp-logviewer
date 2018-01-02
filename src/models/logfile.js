@@ -30,8 +30,8 @@ class LogFile {
     this.logformat = logformat
     this.size = this.countGroup(logformat.toString())
   }
-  initByString (logstr) {
-    this.name = 'Check'
+  initByString (name, logstr) {
+    this.name = name
     this.logs = []
 
     let logItem
