@@ -3,6 +3,31 @@
 > Simple temporary log viewer
 
 
+== How to run
+
+
+[source=bash]
+====
+docker build -t logv . # --build-arg http_proxy=http://user:pass@proxy.example.com:8080 --build-arg https_proxy=http://user:pass@proxy.example.com:8080
+docker run --rm --name logv -d -p 8080:80 logv
+====
+
+== How to use
+
+Register logformat
+
+1. Click `Register RegExp` menu link
+2. Input `Log Sample` and `Log Format` by Regular expression
+3. Click `Check` button
+4. If you get expected result, input `Log Format Id` and Click `Register` button
+
+Parse log file
+
+1. Click `Parse Log` menu link
+2. Select `Log Format`
+3. Drag & Drop your log file
+
+
 == Build Setup
 
 ``` bash
@@ -24,5 +49,3 @@ npm run unit
 # run all tests
 npm test
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
