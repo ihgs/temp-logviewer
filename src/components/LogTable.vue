@@ -5,6 +5,14 @@
     <b-button v-on:click="exportToCsv()" size="sm">Download CSV</b-button>
   </div>
   <div id="message">{{message}}</div>
+  <div class="range">
+    <b-form inline>
+      <label> Range: </label>
+      <b-form-input type="number" size="sm" v-model="from" v-on:input="update()"></b-form-input>
+      ~
+      <b-form-input type="number" size="sm" v-model="to" v-on:input="update()"></b-form-input>
+    </b-form>
+  </div>
   <table class="logtable" v-if="item">
     <thead>
       <tr>
@@ -46,7 +54,9 @@ export default {
     return {
       filterlogs: this.item.logs,
       filters: [],
-      message: ''
+      message: '',
+      from: undefined,
+      to: undefined
     }
   },
   watch: {
@@ -58,11 +68,22 @@ export default {
     update: _.debounce(function (n, value) {
       this.message = 'Filtering....'
       this.filterlogs = []
-      this.filters[n - 1] = value
+      if (n) {
+        this.filters[n - 1] = value
+      }
       const filters = this.filters
       const _this = this
       _.defer(function () {
-        _this.filterlogs = _.filter(_this.item.logs, function (l) {
+        let start = 0
+        let end = _this.item.logs.length
+        if (_this.from && _this.from - 1 > start) {
+          start = _this.from - 1
+        }
+        if (_this.to && _this.to < end) {
+          end = _this.to
+        }
+        for (let j = start; j < end; j++) {
+          const l = _this.item.logs[j]
           const columnSize = l.key.length
           let hasInput = false
           let match = false
@@ -75,8 +96,10 @@ export default {
               }
             }
           }
-          return match || !hasInput
-        })
+          if (match || !hasInput) {
+            _this.filterlogs.push(l)
+          }
+        }
         _this.message = ''
       })
     }, 1000),
@@ -130,5 +153,13 @@ table {
 table tr td {
     border: 1px black solid;
     padding: 3px
+}
+
+.range {
+  margin-bottom: 20px
+}
+
+input {
+  width: 100%;
 }
 </style>
