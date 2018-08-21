@@ -27,7 +27,7 @@
     <tbody>
       <tr v-for="log in filterlogs" :key="log.index">
         <td>{{log.index}}</td>
-        <td v-for="column in log.key">
+        <td v-for="(column, index) in log.key" v-bind:key="index">
           {{column}}
         </td>
         <td>

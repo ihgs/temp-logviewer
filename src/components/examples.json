@@ -1,0 +1,55 @@
+[
+  {
+    "type": "日付1",
+    "example": [
+      "2018/8/10",
+      "2018/08/10"
+    ],
+    "regex": "\\d{1,4}/\\d{1,2}/\\d{1,2}"
+  },
+  {
+    "type": "空白なしの文字列",
+    "example": [
+      "testhohooho"
+    ],
+    "regex": "[^\\s]+"
+  },
+  {
+    "type": "固定値 <br>(追加後、編集してください orz..)",
+    "example": [
+      "xxxxxxx"
+    ],
+    "regex": "xxxxxxx"
+  },
+  {
+    "type": "一つ以上の空白/タブ",
+    "example": [
+      "  "
+    ],
+    "regex": "[\\s]+",
+    "separator": true
+  },
+  {
+    "type": "コロン",
+    "example": [
+      ":"
+    ],
+    "regex": "\\s*:\\s*",
+    "separator": true
+  },
+  {
+    "type": "カンマ",
+    "example": [
+      ","
+    ],
+    "regex": "\\s*,\\s*",
+    "separator": true
+  },
+  {
+    "type": "ipv4",
+    "example": [
+      "192.168.0.1"
+    ],
+    "regex": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"
+  }
+]

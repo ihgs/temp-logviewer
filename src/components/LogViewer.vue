@@ -18,7 +18,7 @@
     </div>
     <div class="logarea">
       <ul>
-        <li v-for="item in logFiles">
+        <li v-for="(item, index) in logFiles" :key="index">
           <logtable v-bind:item="item"></logtable>
         </li>
       </ul>

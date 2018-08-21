@@ -4,7 +4,7 @@
     <b-modal v-bind:id="modalid" size="lg" title="Trace" ok-only>
       <b-card>
       <ol>
-        <li v-for="d in detail">
+        <li v-for="(d, index) in detail" v-bind:key="index">
           {{d}}
         </li>
       </ol>

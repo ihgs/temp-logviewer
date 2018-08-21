@@ -28,7 +28,13 @@
         <div class="error">
           {{errorMsg}}
         </div>
+        <div>
+          <b-link v-b-modal.helperModal>helper</b-link>
+        </div>
       </b-form-group>
+      <b-modal id="helperModal" size="lg" title="Regex Helper" @ok="setTmpRegex">
+        <helper ref="helper"></helper>
+      </b-modal>
       <b-button type="submit" v-on:click="load()">Check</b-button>
       <b-button type="reset" v-on:click="clear()">Clear</b-button>
 
@@ -51,13 +57,17 @@
 <script>
 import LogFile from '../models/logfile'
 import LogFormatList from '../models/logformat'
+import Helper from './Helper'
 
 export default {
   name: 'RegisterRegexp',
+  components: {
+    helper: Helper
+  },
   data () {
     return {
       sample: '',
-      logformat: '^(\\d+:\\d+:\\d+\\.\\d+)\\s+\\[([\\w\\d-]+)\\]\\s+(\\w+)\\s+(.*)$',
+      logformat: '',
       logFile: undefined,
       logformat_id: '',
       errorMsg: '',
@@ -106,6 +116,9 @@ export default {
     remove: function (id) {
       this.registerd.remove(id)
       this.registerd.save()
+    },
+    setTmpRegex: function () {
+      this.logformat = this.$refs.helper.tmpRegex + '$'
     }
   }
 }
