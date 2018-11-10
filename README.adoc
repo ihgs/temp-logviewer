@@ -1,5 +1,7 @@
 = temp-logviewer
 
+image:https://badges.greenkeeper.io/ihgs/temp-logviewer.svg[link="https://greenkeeper.io/"]
+
 > Simple temporary log viewer
 
 
