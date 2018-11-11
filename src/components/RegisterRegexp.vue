@@ -29,7 +29,7 @@
           {{errorMsg}}
         </div>
         <div>
-          <b-link v-b-modal.helperModal>helper</b-link>
+          <a target="_blank" href="https://github.com/ihgs/temp-logviewer/wiki/Regex-sample">wiki</a>
         </div>
       </b-form-group>
       <b-modal id="helperModal" size="lg" title="Regex Helper" @ok="setTmpRegex">
